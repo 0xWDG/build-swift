@@ -1,0 +1,92 @@
+# Build Swift Packages
+#
+# Made by: Wesley de Groot 
+# Email: email+gha@wesleydegroot.nl
+
+name: 'Build Swift Packages'
+description: 'Build Swift Packages (SPM Packages)'
+author: 'Wesley de Groot <email+gha@wesleydegroot.nl>'
+
+inputs:
+  product:
+    description: 'Package name'
+    required: false
+    default: '__AUTO__'
+  iOS:
+    description: 'Should build for iOS'
+    required: false
+    default: true
+  watchOS:
+    description: 'Should build for watchOS'
+    required: false
+    default: true
+  tvOS:
+    description: 'Should build for tvOS'
+    required: false
+    default: true
+  visionOS:
+    description: 'Should build for visionOS'
+    required: false
+    default: true
+  watchOS:
+    description: 'Should build for watchOS'
+    required: false
+    default: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Get Product Name
+      shell: bash
+      run: |
+        if [[ "${{ inputs.product }}" == "__AUTO__" ]]
+        then
+          # Automatically get package name
+          PRODUCT_NAME=`cat Package.swift | grep -m1 "name" | awk -F'"' '{print $2}'`
+        else
+          # Use provided product name
+          PRODUCT_NAME="${{ inputs.product }}"
+        fi
+        echo "PRODUCT_NAME=$PRODUCT_NAME" >> $GITHUB_ENV
+       
+    - name: Build for iOS
+      shell: bash
+      if: ${{ inputs.iOS == true || inputs.iOS == 'true' }}
+      run: |
+        xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=iOS
+
+    - name: Build for watchOS
+      shell: bash
+      if: ${{ inputs.watchOS == true || inputs.watchOS == 'true' }}
+      run: |
+        xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=watchOS
+
+    - name: Build for tvOS
+      shell: bash
+      if: ${{ inputs.tvOS == true || inputs.tvOS == 'true' }}
+      run: |
+        xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=tvOS
+
+    - name: Build for visionOS
+      shell: bash
+      if: ${{ inputs.visionOS == true || inputs.visionOS == 'true' }}
+      run: |
+        xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=xrOS
+
+    - name: Build for macOS
+      shell: bash
+      if: ${{ inputs.macOS == true || inputs.macOS == 'true' }}
+      run: swift build
+
+    - name: Build for Linux
+      if: ${{ inputs.Linux == true || inputs.Linux == 'true' }}
+      runs-on: ubuntu-latest
+      shell: bash
+      run: swift build
+
+branding:
+  icon: "upload-cloud"
+  color: "blue"
