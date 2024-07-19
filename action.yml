@@ -83,8 +83,8 @@ runs:
 
     - name: Build for Linux
       if: ${{ inputs.Linux == true || inputs.Linux == 'true' }}
+      shell: bash
     #   runs-on: ubuntu-latest
-    #   shell: bash
     #   run: swift build
       run: echo "Not supported yet"
 
