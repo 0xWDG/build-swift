@@ -28,8 +28,8 @@ inputs:
     description: 'Should build for visionOS'
     required: false
     default: true
-  watchOS:
-    description: 'Should build for watchOS'
+  macOS:
+    description: 'Should build for macOS'
     required: false
     default: true
 
@@ -83,9 +83,10 @@ runs:
 
     - name: Build for Linux
       if: ${{ inputs.Linux == true || inputs.Linux == 'true' }}
-      runs-on: ubuntu-latest
-      shell: bash
-      run: swift build
+    #   runs-on: ubuntu-latest
+    #   shell: bash
+    #   run: swift build
+      run: echo "Not supported yet"
 
 branding:
   icon: "upload-cloud"
