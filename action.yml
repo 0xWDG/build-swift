@@ -56,37 +56,51 @@ runs:
       shell: bash
       if: ${{ inputs.iOS == true || inputs.iOS == 'true' }}
       run: |
+        echo "::group::Build for iOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=iOS
+        echo "::endgroup::"
 
     - name: Build for watchOS
       shell: bash
       if: ${{ inputs.watchOS == true || inputs.watchOS == 'true' }}
       run: |
+        echo "::group::Build for watchOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=watchOS
+        echo "::endgroup::"
 
     - name: Build for tvOS
       shell: bash
       if: ${{ inputs.tvOS == true || inputs.tvOS == 'true' }}
       run: |
+        echo "::group::Build for tvOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=tvOS
+        echo "::endgroup::"
 
     - name: Build for visionOS
       shell: bash
       if: ${{ inputs.visionOS == true || inputs.visionOS == 'true' }}
       run: |
+        echo "::group::Build for visionOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=xrOS
+        echo "::endgroup::"
 
     - name: Build for macOS
       shell: bash
       if: ${{ inputs.macOS == true || inputs.macOS == 'true' }}
-      run: swift build
+      run: |
+        echo "::group::Build for macOS"
+        swift build
+        echo "::endgroup::"
 
     - name: Build for Linux
       if: ${{ inputs.Linux == true || inputs.Linux == 'true' }}
       shell: bash
     #   runs-on: ubuntu-latest
     #   run: swift build
-      run: echo "Not supported yet"
+      run: |
+        echo "::group::Build for Linux"
+        echo "Not supported yet"
+        echo "::endgroup::"
 
 branding:
   icon: "upload-cloud"
