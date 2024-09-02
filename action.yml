@@ -51,10 +51,71 @@ runs:
           PRODUCT_NAME="${{ inputs.product }}"
         fi
         echo "PRODUCT_NAME=$PRODUCT_NAME" >> $GITHUB_ENV
-       
+
+        buildForiOS="false"
+        buildForwatchOS="false"
+        buildFortvOS="false"
+        buildForMacCatalyst="false"
+        buildForvisionOS="false"
+        buildFormacOS="false"
+        buildForLinux="false"
+        buildForWindows="false" # Not supported right now
+        buildForAndroid="false" # Not supported right now
+        buildForDriverKit="false" # Not supported right now
+        
+        if grep -Rq "\.iOS" Package.swift ; then
+          buildForiOS="true"
+        fi
+        echo "buildForiOS=$buildForiOS" >> $GITHUB_ENV
+
+        if grep -Rq "\.watchOS" Package.swift ; then
+          buildForwatchOS="true"
+        fi
+        echo "buildForwatchOS=$buildForwatchOS" >> $GITHUB_ENV
+
+        if grep -Rq "\.tvOS" Package.swift ; then
+          buildFortvOS="true"
+        fi
+        echo "buildFortvOS=$buildFortvOS" >> $GITHUB_ENV
+
+        if grep -Rq "\.maccatalyst" Package.swift ; then
+          buildForMacCatalyst="true"
+        fi
+        echo "buildForMacCatalyst=$buildForMacCatalyst" >> $GITHUB_ENV
+        
+        if grep -Rq "\.visionOS" Package.swift ; then
+          buildForvisionOS="true"
+        fi
+        echo "buildForvisionOS=$buildForvisionOS" >> $GITHUB_ENV
+
+        if grep -Rq "\.macOS" Package.swift ; then
+          buildFormacOS="true"
+        fi
+        echo "buildFormacOS=$buildFormacOS" >> $GITHUB_ENV
+
+        if grep -Rq "\.linux" Package.swift ; then
+          buildForLinux="true"
+        fi
+        echo "buildForLinux=$buildForLinux" >> $GITHUB_ENV
+
+        if grep -Rq "\.windows" Package.swift ; then
+          buildForWindows="true"
+        fi
+        echo "buildForWindows=$buildForWindows" >> $GITHUB_ENV
+
+        if grep -Rq "\.android" Package.swift ; then
+          buildForAndroid="true"
+        fi
+        echo "buildForAndroid=$buildForAndroid" >> $GITHUB_ENV
+
+        if grep -Rq "\.driverkit" Package.swift ; then
+          buildForDriverKit="true"
+        fi
+        echo "buildForDriverKit=$buildForDriverKit" >> $GITHUB_ENV
+        
     - name: Build for iOS
       shell: bash
-      if: ${{ inputs.iOS == true || inputs.iOS == 'true' }}
+      if: ${{ $buildForiOS == true || $buildForiOS == 'true' }}
       run: |
         echo "::group::Build for iOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=iOS
@@ -62,7 +123,7 @@ runs:
 
     - name: Build for watchOS
       shell: bash
-      if: ${{ inputs.watchOS == true || inputs.watchOS == 'true' }}
+      if: ${{ $buildForwatchOS == true || $buildForwatchOS == 'true' }}
       run: |
         echo "::group::Build for watchOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=watchOS
@@ -70,15 +131,23 @@ runs:
 
     - name: Build for tvOS
       shell: bash
-      if: ${{ inputs.tvOS == true || inputs.tvOS == 'true' }}
+      if: ${{ $buildFortvOS == true || $buildFortvOS == 'true' }}
       run: |
         echo "::group::Build for tvOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=tvOS
         echo "::endgroup::"
-
+        
+    - name: Build for MacCatalyst
+      shell: bash
+      if: ${{ $buildForMacCatalyst == true || $buildForMacCatalyst == 'true' }}
+      run: |
+        echo "::group::Build for MacCatalyst"
+        xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=MacCatalyst
+        echo "::endgroup::"
+        
     - name: Build for visionOS
       shell: bash
-      if: ${{ inputs.visionOS == true || inputs.visionOS == 'true' }}
+      if: ${{ $buildForvisionOS == true || $buildForvisionOS == 'true' }}
       run: |
         echo "::group::Build for visionOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=xrOS
@@ -86,14 +155,14 @@ runs:
 
     - name: Build for macOS
       shell: bash
-      if: ${{ inputs.macOS == true || inputs.macOS == 'true' }}
+      if: ${{ $buildFormacOS == true || $buildFormacOS == 'true' }}
       run: |
         echo "::group::Build for macOS"
         swift build
         echo "::endgroup::"
 
     - name: Build for Linux
-      if: ${{ inputs.Linux == true || inputs.Linux == 'true' }}
+      if: ${{ $buildForLinux == true || $buildForLinux == 'true' }}
       shell: bash
     #   runs-on: ubuntu-latest
     #   run: swift build
@@ -102,6 +171,36 @@ runs:
         echo "Not supported yet"
         echo "::endgroup::"
 
+    - name: Build for Windows
+      if: ${{ $buildForWindows == true || $buildForWindows == 'true' }}
+      shell: bash
+    #   runs-on: ubuntu-latest
+    #   run: swift build
+      run: |
+        echo "::group::Build for Windows"
+        echo "Not supported yet"
+        echo "::endgroup::"
+
+    - name: Build for Android
+      if: ${{ $buildForAndroid == true || $buildForAndroid == 'true' }}
+      shell: bash
+    #   runs-on: ubuntu-latest
+    #   run: swift build
+      run: |
+        echo "::group::Build for Android"
+        echo "Not supported yet"
+        echo "::endgroup::"
+
+    - name: Build for DriverKit
+      if: ${{ $buildForDriverKit == true || $buildForDriverKit == 'true' }}
+      shell: bash
+    #   runs-on: ubuntu-latest
+    #   run: swift build
+      run: |
+        echo "::group::Build for DriverKit"
+        echo "Not supported yet"
+        echo "::endgroup::"
+        
 branding:
   icon: "upload-cloud"
   color: "blue"
