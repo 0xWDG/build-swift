@@ -39,7 +39,7 @@ runs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Get Product Name
+    - name: Set up variables
       shell: bash
       run: |
         if [[ "${{ inputs.product }}" == "__AUTO__" ]]
@@ -115,7 +115,7 @@ runs:
         
     - name: Build for iOS
       shell: bash
-      if: ${{ $buildForiOS == true || $buildForiOS == 'true' }}
+      if: ${{ buildForiOS == true || buildForiOS == 'true' }}
       run: |
         echo "::group::Build for iOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=iOS
@@ -123,7 +123,7 @@ runs:
 
     - name: Build for watchOS
       shell: bash
-      if: ${{ $buildForwatchOS == true || $buildForwatchOS == 'true' }}
+      if: ${{ buildForwatchOS == true || buildForwatchOS == 'true' }}
       run: |
         echo "::group::Build for watchOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=watchOS
@@ -131,7 +131,7 @@ runs:
 
     - name: Build for tvOS
       shell: bash
-      if: ${{ $buildFortvOS == true || $buildFortvOS == 'true' }}
+      if: ${{ buildFortvOS == true || buildFortvOS == 'true' }}
       run: |
         echo "::group::Build for tvOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=tvOS
@@ -139,7 +139,7 @@ runs:
         
     - name: Build for MacCatalyst
       shell: bash
-      if: ${{ $buildForMacCatalyst == true || $buildForMacCatalyst == 'true' }}
+      if: ${{ buildForMacCatalyst == true || buildForMacCatalyst == 'true' }}
       run: |
         echo "::group::Build for MacCatalyst"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=MacCatalyst
@@ -147,7 +147,7 @@ runs:
         
     - name: Build for visionOS
       shell: bash
-      if: ${{ $buildForvisionOS == true || $buildForvisionOS == 'true' }}
+      if: ${{ buildForvisionOS == true || buildForvisionOS == 'true' }}
       run: |
         echo "::group::Build for visionOS"
         xcrun xcodebuild clean build -quiet -scheme "$PRODUCT_NAME" -destination generic/platform=xrOS
@@ -155,14 +155,14 @@ runs:
 
     - name: Build for macOS
       shell: bash
-      if: ${{ $buildFormacOS == true || $buildFormacOS == 'true' }}
+      if: ${{ buildFormacOS == true || buildFormacOS == 'true' }}
       run: |
         echo "::group::Build for macOS"
         swift build
         echo "::endgroup::"
 
     - name: Build for Linux
-      if: ${{ $buildForLinux == true || $buildForLinux == 'true' }}
+      if: ${{ buildForLinux == true || buildForLinux == 'true' }}
       shell: bash
     #   runs-on: ubuntu-latest
     #   run: swift build
@@ -172,7 +172,7 @@ runs:
         echo "::endgroup::"
 
     - name: Build for Windows
-      if: ${{ $buildForWindows == true || $buildForWindows == 'true' }}
+      if: ${{ buildForWindows == true || buildForWindows == 'true' }}
       shell: bash
     #   runs-on: ubuntu-latest
     #   run: swift build
@@ -182,7 +182,7 @@ runs:
         echo "::endgroup::"
 
     - name: Build for Android
-      if: ${{ $buildForAndroid == true || $buildForAndroid == 'true' }}
+      if: ${{ buildForAndroid == true || buildForAndroid == 'true' }}
       shell: bash
     #   runs-on: ubuntu-latest
     #   run: swift build
@@ -192,7 +192,7 @@ runs:
         echo "::endgroup::"
 
     - name: Build for DriverKit
-      if: ${{ $buildForDriverKit == true || $buildForDriverKit == 'true' }}
+      if: ${{ buildForDriverKit == true || buildForDriverKit == 'true' }}
       shell: bash
     #   runs-on: ubuntu-latest
     #   run: swift build
